@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, g
-from app.user.controller import register, login
+from app.user.controller import register, login, get_profile, update_profile, update_password
 from app.middleware.auth_middleware import login_required
 
 
@@ -17,6 +17,14 @@ def login_route():
 @user_bp.route("/profile", methods=["GET"])
 @login_required
 def profile():
-    return jsonify({
-        "user_id": g.user_id
-    })
+    return get_profile()
+
+@user_bp.route("/profile", methods=["PUT"])
+@login_required
+def update_profile_route():
+    return update_profile()
+
+@user_bp.route("/password", methods=["PUT"])
+@login_required
+def update_password_route():
+    return update_password()
