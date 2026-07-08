@@ -1,4 +1,5 @@
 from app.category.repository import CategoryRepository
+from psycopg2.errors import ForeignKeyViolation
 
 
 class CategoryService:
@@ -150,6 +151,10 @@ class CategoryService:
                 "message": "Categoría eliminada correctamente."
             }, 200
 
+        except ForeignKeyViolation:
+            return {
+                "message": "No se puede eliminar la categoría porque tiene movimientos asociados."
+            }, 409
         except Exception as e:
             return {
                 "message": "Error al eliminar la categoría.",
